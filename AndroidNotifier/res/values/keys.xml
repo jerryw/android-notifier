@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="event_type_format_prefkey">events.%s.enabled</string>
+  <string name="start_foreground_prefkey">startForeground</string>
+  <string name="delete_processed_events_prefkey">deleteProcessedEvents</string>
+  <string name="min_battery_level_prefkey">minBatteryLevel</string>
+  <string name="max_battery_level_prefkey">maxBatteryLevel</string>
+  <string name="min_battery_level_change_prefkey">batteryMinLevelChange</string>
+</resources>

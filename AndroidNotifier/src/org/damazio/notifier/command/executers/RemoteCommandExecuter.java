@@ -17,10 +17,6 @@ import android.util.Log;
  */
 public class RemoteCommandExecuter implements EventListener {
 
-  public void onNewLocalEvent(Event event) {
-    // Do nothing.
-  }
-
   public void onNewEvent(EventContext context, long eventId, Event event, boolean isLocal, boolean isCommand) {
     // Ensure it's a command sent from another device.
     if (isLocal || !isCommand) {

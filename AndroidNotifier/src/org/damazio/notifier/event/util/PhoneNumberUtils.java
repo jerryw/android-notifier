@@ -8,8 +8,8 @@ import org.damazio.notifier.protocol.Common.PhoneNumber.Builder;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.ContactsContract.PhoneLookup;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.ContactsContract.PhoneLookup;
 import android.util.Log;
 
 public class PhoneNumberUtils {

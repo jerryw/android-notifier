@@ -67,7 +67,7 @@ public class EventLogProvider extends ContentProvider {
   public int delete(Uri uri, String selection, String[] selectionArgs) {
     // TODO: Extract
     if (matchUriOrThrow(uri) == MATCH_ITEM) {
-      long id = ContentUris.parseId(uri);
+      String id = uri.getLastPathSegment();
       if (selection != null) {
         selection = "(" + selection + ") AND _id = ?";
       } else {
@@ -78,7 +78,7 @@ public class EventLogProvider extends ContentProvider {
       } else {
         selectionArgs = new String[1];
       }
-      selectionArgs[selectionArgs.length - 1] = Long.toString(id);
+      selectionArgs[selectionArgs.length - 1] = id;
     }
 
     int rows = db.delete(EventLogColumns.TABLE_NAME, selection, selectionArgs);
@@ -120,7 +120,7 @@ public class EventLogProvider extends ContentProvider {
   public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
       String sortOrder) {
     if (matchUriOrThrow(uri) == MATCH_ITEM) {
-      long id = ContentUris.parseId(uri);
+      String id = uri.getLastPathSegment();
       if (selection != null) {
         selection = "(" + selection + ") AND _id = ?";
       } else {
@@ -131,7 +131,7 @@ public class EventLogProvider extends ContentProvider {
       } else {
         selectionArgs = new String[1];
       }
-      selectionArgs[selectionArgs.length - 1] = Long.toString(id);
+      selectionArgs[selectionArgs.length - 1] = id;
     }
 
     Cursor cursor = db.query(EventLogColumns.TABLE_NAME, projection, selection, selectionArgs,
@@ -143,7 +143,7 @@ public class EventLogProvider extends ContentProvider {
   @Override
   public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
     if (matchUriOrThrow(uri) == MATCH_ITEM) {
-      long id = ContentUris.parseId(uri);
+      String id = uri.getLastPathSegment();
       if (selection != null) {
         selection = "(" + selection + ") AND _id = ?";
       } else {
@@ -154,7 +154,7 @@ public class EventLogProvider extends ContentProvider {
       } else {
         selectionArgs = new String[1];
       }
-      selectionArgs[selectionArgs.length - 1] = Long.toString(id);
+      selectionArgs[selectionArgs.length - 1] = id;
     }
 
     int numRows = db.update(EventLogColumns.TABLE_NAME, values, selection, selectionArgs);

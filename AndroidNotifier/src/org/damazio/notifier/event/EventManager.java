@@ -138,7 +138,6 @@ public class EventManager {
         for (EventListener listener : listeners) {
           listener.onNewEvent(eventContext, lastEventId, event, isLocal, isCommand);
         }
-
       }
     }
   }

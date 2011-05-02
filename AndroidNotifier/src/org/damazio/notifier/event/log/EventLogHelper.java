@@ -48,11 +48,10 @@ public class EventLogHelper {
   }
 
   public Cursor getUnprocessedEvents(long minEventId) {
-    contentResolver.query(EventLogColumns.URI, null,
+    return contentResolver.query(EventLogColumns.URI, null,
         EventLogColumns.COLUMN_PROCESSED + " = FALSE AND" +
         EventLogColumns._ID + " >= ?", new String[] { Long.toString(minEventId) },
         null);
-    return null;
   }
 
   public Event buildEvent(Cursor cursor) {

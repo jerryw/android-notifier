@@ -77,7 +77,7 @@ public class Preferences {
   }
 
   private void notifyPreferenceChanged(String key) {
-    if (context.getString(R.string.start_foreground_prefkey).equals(key)) {
+    if (context.getString(R.string.prefkey_start_foreground).equals(key)) {
       synchronized (listeners) {
         boolean startForeground = startForeground();
         for (PreferenceListener listener : listeners) {
@@ -88,27 +88,32 @@ public class Preferences {
   }
 
   public boolean isEventTypeEnabled(Event.Type type) {
-    String prefName = context.getString(R.string.event_type_format_prefkey, type.name());
+    String prefName = context.getString(R.string.prefkey_event_type_format, type.name());
     return prefs.getBoolean(prefName, true);
   }
 
   public boolean startForeground() {
-    return prefs.getBoolean(context.getString(R.string.start_foreground_prefkey), true);
+    return prefs.getBoolean(context.getString(R.string.prefkey_start_foreground), true);
   }
 
   public int getMaxBatteryLevel() {
-    return prefs.getInt(context.getString(R.string.max_battery_level_prefkey), 100);
+    return prefs.getInt(context.getString(R.string.prefkey_max_battery_level), 100);
   }
 
   public int getMinBatteryLevel() {
-    return prefs.getInt(context.getString(R.string.min_battery_level_prefkey), 0);
+    return prefs.getInt(context.getString(R.string.prefkey_min_battery_level), 0);
   }
 
   public int getMinBatteryLevelChange() {
-    return prefs.getInt(context.getString(R.string.min_battery_level_change_prefkey), 5);
+    return prefs.getInt(context.getString(R.string.prefkey_min_battery_level_change), 5);
   }
 
-  public boolean deleteProcessedEvents() {
-    return prefs.getBoolean(context.getString(R.string.delete_processed_events_prefkey), false);
+  public boolean shouldPruneLog() {
+    return prefs.getBoolean(context.getString(R.string.prefkey_prune_log), false);
+  }
+
+  public int getPruneLogDays() {
+    String daysStr = prefs.getString(context.getString(R.string.prefkey_prune_log_days), "7");
+    return Integer.parseInt(daysStr);
   }
 }

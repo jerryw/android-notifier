@@ -1,3 +1,18 @@
+/*
+ * Copyright 2011 Rodrigo Damazio
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.damazio.notifier.comm.encryption;
 
 import java.io.UnsupportedEncodingException;
@@ -7,18 +22,20 @@ import java.security.NoSuchAlgorithmException;
 import javax.crypto.spec.SecretKeySpec;
 
 public class PassKey {
-  static final String HASH_ALGORITHM = "MD5";
-  static final String ENCRYPTION_KEY_TYPE = "AES";
+  private static final String HASH_ALGORITHM = "MD5";
+  private static final String ENCRYPTION_KEY_TYPE = "AES";
 
   private final byte[] keyBytes;
-  private final byte[] iv;
-  private final SecretKeySpec keySpec;
+  private byte[] iv;
+  private SecretKeySpec keySpec;
 
   public PassKey(String passPhrase, int numHashes) {
     // Use an MD5 to generate an arbitrary initialization vector
-    keyBytes = passPhraseToKey(passPhrase, HASH_ALGORITHM, numHashes);
-    iv = doDigest(keyBytes, "MD5");
-    keySpec = new SecretKeySpec(keyBytes, ENCRYPTION_KEY_TYPE);
+    this.keyBytes = passPhraseToKey(passPhrase, HASH_ALGORITHM, numHashes);
+  }
+
+  public PassKey(byte[] keyBytes) {
+    this.keyBytes = keyBytes;
   }
 
   public byte[] getKeyBytes() {
@@ -26,10 +43,16 @@ public class PassKey {
   }
 
   public SecretKeySpec getKeySpec() {
+    if (keySpec == null) {
+      keySpec = new SecretKeySpec(keyBytes, ENCRYPTION_KEY_TYPE);
+    }
     return keySpec;
   }
 
   public byte[] getInitVector() {
+    if (iv == null) {
+      iv = doDigest(keyBytes, "MD5");
+    }
     return iv;
   }
 

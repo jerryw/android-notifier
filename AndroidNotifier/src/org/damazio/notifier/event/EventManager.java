@@ -1,3 +1,18 @@
+/*
+ * Copyright 2011 Rodrigo Damazio
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.damazio.notifier.event;
 
 import static org.damazio.notifier.Constants.TAG;
@@ -57,7 +72,8 @@ public class EventManager {
   }
 
   public void markEventProcessed(long eventId) {
-    if (preferences.deleteProcessedEvents()) {
+    if (preferences.shouldPruneLog() && preferences.getPruneLogDays() == 0) {
+      // Prune immediately.
       logHelper.deleteEvent(eventId);
     } else {
       logHelper.markEventProcessed(eventId);
@@ -84,6 +100,10 @@ public class EventManager {
         unregisterEventLogListener();
       }
     }
+  }
+
+  public void forceRetryProcessing() {
+    logObserver.dispatchChange(false);
   }
 
   private void registerEventLogListener() {
@@ -123,7 +143,7 @@ public class EventManager {
 
   private void notifyNewEvents() {
     // Get all unprocessed events since the last one.
-    // TODO: Also retry older ones, up to a certain deadline.
+    // TODO: Also retry older ones, up to a certain deadline, but not too quickly.
     Cursor cursor = logHelper.getUnprocessedEvents(lastEventId + 1);
     synchronized (listeners) {
       while (cursor.moveToNext()) {

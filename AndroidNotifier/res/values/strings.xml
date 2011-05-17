@@ -94,6 +94,17 @@
   <string name="prefs_send_third_party_title"></string>
   <string name="prefs_send_third_party_summary_on"></string>
   <string name="prefs_send_third_party_summary_off"></string>
+  <string name="prefs_notification_display_title"></string>
+  <string name="prefs_display_system_title"></string>
+  <string name="prefs_display_system_summary_on"></string>
+  <string name="prefs_display_system_summary_off"></string>
+  <string name="prefs_display_toast_title"></string>
+  <string name="prefs_display_toast_summary_on"></string>
+  <string name="prefs_display_toast_summary_off"></string>
+  <string name="prefs_display_popup_title"></string>
+  <string name="prefs_display_popup_summary_on"></string>
+  <string name="prefs_display_popup_summary_off"></string>
+
   <string name="prefs_command_title"></string>
   <string name="prefs_command_summary"></string>
   <string name="prefs_command_master_title"></string>

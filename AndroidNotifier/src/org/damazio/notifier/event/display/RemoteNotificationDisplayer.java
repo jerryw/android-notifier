@@ -15,9 +15,16 @@
  */
 package org.damazio.notifier.event.display;
 
+import org.damazio.notifier.R;
 import org.damazio.notifier.event.EventContext;
 import org.damazio.notifier.event.EventListener;
+import org.damazio.notifier.prefs.Preferences;
 import org.damazio.notifier.protocol.Common.Event;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.widget.Toast;
 
 /**
  * Locally displays remote notifications.
@@ -32,7 +39,32 @@ public class RemoteNotificationDisplayer implements EventListener {
       return;
     }
 
-    // TODO
+    // TODO: Proper text
+    String shortText = event.toString();
+
+    Preferences preferences = context.getPreferences();
+    if (preferences.isSystemDisplayEnabled()) {
+      Notification notification = new Notification(R.drawable.icon, shortText, System.currentTimeMillis());
+      // TODO: Intent = event log
+      // TODO: Configurable defaults
+      notification.defaults = Notification.DEFAULT_ALL;
+      notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+      NotificationManager notificationManager =
+          (NotificationManager) context.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+      notificationManager.notify(
+          "display",
+          (int) (event.getTimestamp() & Integer.MAX_VALUE),
+          notification);
+    }
+
+    if (preferences.isToastDisplayEnabled()) {
+      Toast.makeText(context.getContext(), shortText, Toast.LENGTH_LONG).show();
+    }
+
+    if (preferences.isPopupDisplayEnabled()) {
+      // TODO
+    }
 
     context.getEventManager().markEventProcessed(eventId);
   }

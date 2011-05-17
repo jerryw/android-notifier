@@ -12,6 +12,9 @@
   <string name="prefkey_start_foreground">startForeground</string>
   <string name="prefkey_send_notifications">sendNotifications</string>
   <string name="prefkey_receive_notifications">receiveNotifications</string>
+  <string name="prefkey_display_system">displaySystem</string>
+  <string name="prefkey_display_toast">displaySystem</string>
+  <string name="prefkey_display_popup">displaySystem</string>
   <string name="prefkey_receive_commands">receiveCommands</string>
 
   <!-- %s here and below must match the Event.Type enum. -->

@@ -15,6 +15,8 @@
  */
 package org.damazio.notifier.prefs;
 
+import org.damazio.notifier.R;
+
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -31,6 +33,8 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
 
     preferences = PreferenceManager.getDefaultSharedPreferences(this);
     backupListener = BackupPreferenceListener.create(this);
+
+    addPreferencesFromResource(R.xml.prefs);
   }
 
   @Override

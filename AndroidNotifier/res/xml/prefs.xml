@@ -142,6 +142,26 @@
                             android:defaultValue="true" />
       </PreferenceCategory>
 
+      <!-- Notifications sending -->
+      <PreferenceCategory android:title="@string/prefs_notification_display_title"
+                          android:dependency="@string/prefkey_receive_notifications">
+        <!-- TODO: Options for ringtone, lights, etc. -->
+        <CheckBoxPreference android:key="@string/prefkey_display_system"
+                            android:title="@string/prefs_display_system_title"
+                            android:summaryOn="@string/prefs_display_system_summary_on"
+                            android:summaryOff="@string/prefs_display_system_summary_off"
+                            android:defaultValue="true" />
+        <CheckBoxPreference android:key="@string/prefkey_display_toast"
+                            android:title="@string/prefs_display_toast_title"
+                            android:summaryOn="@string/prefs_display_toast_summary_on"
+                            android:summaryOff="@string/prefs_display_toast_summary_off"
+                            android:defaultValue="false" />
+        <CheckBoxPreference android:key="@string/prefkey_display_popup"
+                            android:title="@string/prefs_display_popup_title"
+                            android:summaryOn="@string/prefs_display_popup_summary_on"
+                            android:summaryOff="@string/prefs_display_popup_summary_off"
+                            android:defaultValue="false" />
+      </PreferenceCategory>
     </PreferenceScreen>
 
     <!-- Commands -->

@@ -116,4 +116,16 @@ public class Preferences {
     String daysStr = prefs.getString(context.getString(R.string.prefkey_prune_log_days), "7");
     return Integer.parseInt(daysStr);
   }
+
+  public boolean isSystemDisplayEnabled() {
+    return prefs.getBoolean(context.getString(R.string.prefkey_display_system), true);
+  }
+
+  public boolean isToastDisplayEnabled() {
+    return prefs.getBoolean(context.getString(R.string.prefkey_display_toast), false);
+  }
+
+  public boolean isPopupDisplayEnabled() {
+    return prefs.getBoolean(context.getString(R.string.prefkey_display_popup), false);
+  }
 }

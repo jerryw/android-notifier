@@ -13,20 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.damazio.notifier;
+package org.damazio.notifier.event.display;
 
-import org.damazio.notifier.prefs.PreferenceActivity;
+import org.damazio.notifier.R;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class MainActivity extends Activity {
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+/**
+ * Simple activity which displays a pop-up.
+ *
+ * @author Rodrigo Damazio
+ */
+public class PopupDisplayActivity extends Activity {
+  
+  public static final String EXTRA_POPUP_TEXT = "popup_text";
 
-    // For now, just go to preferences.
-    startActivity(new Intent(this, PreferenceActivity.class));
+  @Override
+  public void onCreate(Bundle savedState) {
+    Intent intent = getIntent();
+    String text = intent.getStringExtra(EXTRA_POPUP_TEXT);
+
+    AlertDialog popup = new AlertDialog.Builder(this)
+        .setCancelable(true)
+        .setTitle(R.string.popup_display_title)
+        .setMessage(text)
+        .setNeutralButton(android.R.string.ok, null)
+        .create();
+    popup.show();
   }
 }

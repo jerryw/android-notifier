@@ -15,11 +15,13 @@
  */
 package org.damazio.notifier.prefs;
 
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.damazio.notifier.Constants;
 import org.damazio.notifier.R;
+import org.damazio.notifier.comm.transport.TransportType;
 import org.damazio.notifier.protocol.Common.Event;
 
 import android.content.Context;
@@ -127,5 +129,29 @@ public class Preferences {
 
   public boolean isPopupDisplayEnabled() {
     return prefs.getBoolean(context.getString(R.string.prefkey_display_popup), false);
+  }
+
+  public EnumSet<TransportType> getEnabledTransports() {
+    EnumSet<TransportType> transports = EnumSet.noneOf(TransportType.class);
+
+    if (prefs.getBoolean(context.getString(R.string.prefkey_comm_method_bluetooth), false)) {
+      transports.add(TransportType.BLUETOOTH);
+    }
+    if (prefs.getBoolean(context.getString(R.string.prefkey_comm_method_ip), false)) {
+      transports.add(TransportType.IP);
+    }
+    if (prefs.getBoolean(context.getString(R.string.prefkey_comm_method_usb), false)) {
+      transports.add(TransportType.USB);
+    }
+    if (prefs.getBoolean(context.getString(R.string.prefkey_comm_method_cloud), false)) {
+      transports.add(TransportType.CLOUD);
+    }
+
+    return transports;
+  }
+
+  public boolean isIpOverTcp() {
+    // TODO Auto-generated method stub
+    return false;
   }
 }

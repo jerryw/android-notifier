@@ -33,15 +33,15 @@
     </activity>
 
     <!-- Settings activity -->
-    <activity android:name=".prefs.PreferenceActivity"
+    <activity android:name="prefs.PreferenceActivity"
               android:label="@string/settings_title" />
 
     <!-- Event log data provider. -->
-    <provider android:name=".event.log.EventLogProvider"
+    <provider android:name="event.log.EventLogProvider"
               android:authorities="org.damazio.notifier.eventlog" />
 
     <!-- The actual service which listens on events and sends notifications -->
-    <service android:name=".NotifierService"
+    <service android:name="NotifierService"
              android:label="@string/app_name"
              android:icon="@drawable/icon" />
 
@@ -69,7 +69,7 @@
         <data android:mimeType="application/vnd.wap.mms-message" />
       </intent-filter>
     </receiver>
-    <receiver android:name=".event.receivers.thirdparty.ThirdPartyReceiver">
+    <receiver android:name="event.receivers.thirdparty.ThirdPartyReceiver">
       <intent-filter>
         <action android:name="org.damazio.notifier.service.UserReceiver.USER_MESSAGE" />
       </intent-filter>

@@ -63,6 +63,4 @@ class SmsDecoder {
         .setText(body)
         .build();
   }
-
-
 }

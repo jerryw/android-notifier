@@ -1,8 +1,8 @@
 package org.damazio.notifier.comm.transport;
 
 public enum TransportType {
-  TCP,
-  UDP,
+  IP,
   BLUETOOTH,
+  USB,
   CLOUD;
 }

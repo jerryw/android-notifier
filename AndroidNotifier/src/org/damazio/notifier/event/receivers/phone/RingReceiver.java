@@ -40,7 +40,7 @@ public class RingReceiver extends EventBroadcastReceiver {
           .setNumber(incomingNumber)
           .build();
       handleEvent(ring);
-    }    
+    }
   }
 
   @Override

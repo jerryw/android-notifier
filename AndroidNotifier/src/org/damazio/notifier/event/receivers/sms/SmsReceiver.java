@@ -37,7 +37,7 @@ public class SmsReceiver extends EventBroadcastReceiver {
     Bundle bundle = intent.getExtras();
     if (bundle != null) {
       Object[] pdus = (Object[]) bundle.get("pdus");
-      SmsDecoder decoder = new SmsDecoder(context.getContext(), context.getNumberUtils());
+      SmsDecoder decoder = new SmsDecoder(context.getAndroidContext(), context.getNumberUtils());
 
       for (int i = 0; i < pdus.length; i++) {
         SmsNotification sms = decoder.decodeSms(pdus[i]);

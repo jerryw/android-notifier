@@ -15,27 +15,24 @@
  */
 package org.damazio.notifier.event.receivers.phone;
 
-import org.damazio.notifier.event.EventManager;
-import org.damazio.notifier.prefs.Preferences;
+import org.damazio.notifier.event.EventContext;
 import org.damazio.notifier.protocol.Common.Event;
 import org.damazio.notifier.protocol.Notifications.VoicemailNotification;
 
-import android.content.Context;
 import android.telephony.PhoneStateListener;
 
 public class VoicemailListener extends PhoneStateListener {
-  private final Context context;
+  private final EventContext eventContext;
 
-  public VoicemailListener(Context context) {
-    this.context = context;
+  public VoicemailListener(EventContext eventContext) {
+    this.eventContext = eventContext;
   }
-  
+
   @Override
   public void onMessageWaitingIndicatorChanged(boolean mwi) {
     // TODO: Start service if not live
 
-    Preferences preferences = new Preferences(context);
-    if (!preferences.isEventTypeEnabled(Event.Type.NOTIFICATION_VOICEMAIL)) {
+    if (!eventContext.getPreferences().isEventTypeEnabled(Event.Type.NOTIFICATION_VOICEMAIL)) {
       return;
     }
 
@@ -43,7 +40,6 @@ public class VoicemailListener extends PhoneStateListener {
         .setHasVoicemail(mwi)
         .build();
 
-    EventManager eventManager = new EventManager(context, preferences);
-    eventManager.handleLocalEvent(Event.Type.NOTIFICATION_VOICEMAIL, notification);
+    eventContext.getEventManager().handleLocalEvent(Event.Type.NOTIFICATION_VOICEMAIL, notification);
   }
 }

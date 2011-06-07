@@ -18,6 +18,7 @@ package org.damazio.notifier.command.executers;
 import static org.damazio.notifier.Constants.TAG;
 
 import org.damazio.notifier.command.executers.call.CallExecuter;
+import org.damazio.notifier.command.executers.call.HangUpExecuter;
 import org.damazio.notifier.command.executers.sms.SmsExecuter;
 import org.damazio.notifier.event.EventContext;
 import org.damazio.notifier.event.EventListener;
@@ -40,7 +41,7 @@ public class RemoteCommandExecuter implements EventListener {
 
     Log.d(TAG, "Executing command " + event);
     CommandExecuter executer = getExecuterForType(event.getType());
-    executer.executeCommand(context.getContext(), event.getPayload());
+    executer.executeCommand(context.getAndroidContext(), event.getPayload());
 
     context.getEventManager().markEventProcessed(eventId);
   }
@@ -50,7 +51,7 @@ public class RemoteCommandExecuter implements EventListener {
       case COMMAND_CALL:
         return new CallExecuter();
       case COMMAND_HANGUP:
-        return null;  // TODO
+        return new HangUpExecuter();
       case COMMAND_SMS:
         return new SmsExecuter();
       default:

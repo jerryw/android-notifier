@@ -51,10 +51,10 @@
                             android:summaryOn="@string/prefs_comm_method_cloud_summary_on"
                             android:summaryOff="@string/prefs_comm_method_cloud_summary_off"
                             android:defaultValue="true" />
-        <CheckBoxPreference android:key="@string/prefkey_comm_method_wifi"
-                            android:title="@string/prefs_comm_method_wifi_title"
-                            android:summaryOn="@string/prefs_comm_method_wifi_summary_on"
-                            android:summaryOff="@string/prefs_comm_method_wifi_summary_off"
+        <CheckBoxPreference android:key="@string/prefkey_comm_method_ip"
+                            android:title="@string/prefs_comm_method_ip_title"
+                            android:summaryOn="@string/prefs_comm_method_ip_summary_on"
+                            android:summaryOff="@string/prefs_comm_method_ip_summary_off"
                             android:defaultValue="true" />
         <CheckBoxPreference android:key="@string/prefkey_comm_method_bluetooth"
                             android:title="@string/prefs_comm_method_bluetooth_title"
@@ -208,6 +208,6 @@
                 android:title="@string/prefs_report_bug_title"
                 android:summary="@string/prefs_report_bug_summary"
                 android:persistent="false" />
-    
+
   </PreferenceCategory>
 </PreferenceScreen>

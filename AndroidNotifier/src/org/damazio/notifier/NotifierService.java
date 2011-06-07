@@ -20,6 +20,7 @@ import java.util.List;
 import org.damazio.notifier.comm.transport.RemoteEventReceiver;
 import org.damazio.notifier.comm.transport.LocalEventSender;
 import org.damazio.notifier.command.executers.RemoteCommandExecuter;
+import org.damazio.notifier.event.EventContext;
 import org.damazio.notifier.event.EventManager;
 import org.damazio.notifier.event.display.RemoteNotificationDisplayer;
 import org.damazio.notifier.event.receivers.LocalEventReceiver;
@@ -80,10 +81,11 @@ public class NotifierService extends Service {
     updateForegroundState(preferences.startForeground());
 
     eventManager = new EventManager(this, preferences);
+    EventContext eventContext = new EventContext(this, eventManager, preferences);
 
     // Modules (external-event-driven)
     remoteEventReceiver = new RemoteEventReceiver();
-    localEventReceiver = new LocalEventReceiver(this);
+    localEventReceiver = new LocalEventReceiver(eventContext);
     remoteEventReceiver.onCreate();
     localEventReceiver.onCreate();
 
@@ -173,5 +175,9 @@ public class NotifierService extends Service {
     }
 
     return false;
+  }
+
+  protected Preferences getPreferences() {
+    return preferences;
   }
 }

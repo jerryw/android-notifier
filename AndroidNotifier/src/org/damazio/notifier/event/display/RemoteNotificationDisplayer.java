@@ -24,6 +24,7 @@ import org.damazio.notifier.protocol.Common.Event;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 /**
@@ -43,6 +44,7 @@ public class RemoteNotificationDisplayer implements EventListener {
     String shortText = event.toString();
 
     Preferences preferences = context.getPreferences();
+    Context androidContext = context.getAndroidContext();
     if (preferences.isSystemDisplayEnabled()) {
       Notification notification = new Notification(R.drawable.icon, shortText, System.currentTimeMillis());
       // TODO: Intent = event log
@@ -51,7 +53,7 @@ public class RemoteNotificationDisplayer implements EventListener {
       notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
       NotificationManager notificationManager =
-          (NotificationManager) context.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+          (NotificationManager) androidContext.getSystemService(Context.NOTIFICATION_SERVICE);
       notificationManager.notify(
           "display",
           (int) (event.getTimestamp() & Integer.MAX_VALUE),
@@ -59,11 +61,12 @@ public class RemoteNotificationDisplayer implements EventListener {
     }
 
     if (preferences.isToastDisplayEnabled()) {
-      Toast.makeText(context.getContext(), shortText, Toast.LENGTH_LONG).show();
+      Toast.makeText(androidContext, shortText, Toast.LENGTH_LONG).show();
     }
 
     if (preferences.isPopupDisplayEnabled()) {
-      // TODO
+      Intent intent = new Intent(androidContext, PopupDisplayActivity.class);
+      intent.putExtra(PopupDisplayActivity.EXTRA_POPUP_TEXT, shortText);
     }
 
     context.getEventManager().markEventProcessed(eventId);

@@ -39,7 +39,7 @@ public class EventContext {
     return numberUtils;
   }
 
-  public Context getContext() {
+  public Context getAndroidContext() {
     return context;
   }
 

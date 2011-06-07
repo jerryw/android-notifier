@@ -15,17 +15,38 @@
  */
 package org.damazio.notifier.command.executers.sms;
 
+import static org.damazio.notifier.Constants.TAG;
+
+import java.util.ArrayList;
+
 import org.damazio.notifier.command.executers.CommandExecuter;
+import org.damazio.notifier.protocol.Commands.SmsCommand;
 
 import com.google.protobuf.ByteString;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 import android.content.Context;
+import android.telephony.SmsManager;
+import android.util.Log;
 
 public class SmsExecuter implements CommandExecuter {
 
   public void executeCommand(Context context, ByteString payload) {
-    // TODO Auto-generated method stub
-    
+    SmsCommand command;
+    try {
+      command = SmsCommand.parseFrom(payload);
+    } catch (InvalidProtocolBufferException e) {
+      Log.e(TAG, "Failed to parse SMS command", e);
+      return;
+    }
+
+    String text = command.getText();
+    String number = command.getToNumber();
+
+    SmsManager smsManager = SmsManager.getDefault();
+    ArrayList<String> textParts = smsManager.divideMessage(text);
+    // TODO: Some day, notify back about sent and delivered.
+    smsManager.sendMultipartTextMessage(number, null, textParts, null, null);
   }
 
 }

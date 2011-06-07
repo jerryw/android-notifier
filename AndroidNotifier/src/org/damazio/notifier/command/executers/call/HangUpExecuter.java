@@ -13,20 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.damazio.notifier;
+package org.damazio.notifier.command.executers.call;
 
-import org.damazio.notifier.prefs.PreferenceActivity;
+import org.damazio.notifier.command.executers.CommandExecuter;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
+import android.content.Context;
 
-public class MainActivity extends Activity {
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+import com.google.protobuf.ByteString;
 
-    // For now, just go to preferences.
-    startActivity(new Intent(this, PreferenceActivity.class));
+public class HangUpExecuter implements CommandExecuter {
+  public void executeCommand(Context context, ByteString payload) {
+    // TODO: Implement
   }
 }

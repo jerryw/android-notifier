@@ -16,7 +16,9 @@
 package org.damazio.notifier.event.receivers;
 
 import org.damazio.notifier.NotifierService.NotifierServiceModule;
+import org.damazio.notifier.event.EventContext;
 import org.damazio.notifier.event.receivers.battery.BatteryEventReceiver;
+import org.damazio.notifier.event.receivers.phone.MissedCallListener;
 import org.damazio.notifier.event.receivers.phone.VoicemailListener;
 
 import android.content.Context;
@@ -27,23 +29,32 @@ import android.telephony.TelephonyManager;
 
 public class LocalEventReceiver implements NotifierServiceModule {
 
-  private final Context context;
+  private final EventContext eventContext;
+
   private VoicemailListener voicemailListener;
   private BatteryEventReceiver batteryReceiver;
   private TelephonyManager telephonyManager;
+  private MissedCallListener missedCallListener;
 
-  public LocalEventReceiver(Context context) {
-    this.context = context;
+  public LocalEventReceiver(EventContext eventContext) {
+    this.eventContext = eventContext;
   }
-  
+
   public void onCreate() {
     if (voicemailListener != null) {
       throw new IllegalStateException("Already started");
     }
 
-    voicemailListener = new VoicemailListener(context);
+    Context context = eventContext.getAndroidContext();
+
+    // TODO: Start/stop each type of listener depending on preferences
+    
+    // Register telephony listeners
     telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+    voicemailListener = new VoicemailListener(eventContext);
+    missedCallListener = new MissedCallListener(eventContext);
     telephonyManager.listen(voicemailListener, PhoneStateListener.LISTEN_MESSAGE_WAITING_INDICATOR);
+    missedCallListener.onCreate();
 
     // Register the battery receiver
     // (can't be registered in the manifest for some reason)
@@ -56,7 +67,8 @@ public class LocalEventReceiver implements NotifierServiceModule {
       throw new IllegalStateException("Not started");
     }
 
-    context.unregisterReceiver(batteryReceiver);
+    eventContext.getAndroidContext().unregisterReceiver(batteryReceiver);
     telephonyManager.listen(voicemailListener, PhoneStateListener.LISTEN_NONE);
+    missedCallListener.onDestroy();
   }
 }

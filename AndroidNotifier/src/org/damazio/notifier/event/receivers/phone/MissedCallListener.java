@@ -34,10 +34,10 @@ public class MissedCallListener {
       super(handler);
     }
 
-    public void onChange(boolean selfChange) { 
-      super.onChange(selfChange); 
+    public void onChange(boolean selfChange) {
+      super.onChange(selfChange);
 
-      notifyMissedCalls();
+      onCallLogChanged();
     }
   }
 
@@ -62,7 +62,7 @@ public class MissedCallListener {
     resolver.unregisterContentObserver(observer);
   }
 
-  private void notifyMissedCalls() {
+  private void onCallLogChanged() {
     Cursor cursor = resolver.query(
         CallLog.Calls.CONTENT_URI,
         new String[] { CallLog.Calls.NUMBER, CallLog.Calls.DATE },

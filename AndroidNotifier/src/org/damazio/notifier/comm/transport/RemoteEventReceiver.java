@@ -16,6 +16,8 @@
 package org.damazio.notifier.comm.transport;
 
 import org.damazio.notifier.NotifierService.NotifierServiceModule;
+import org.damazio.notifier.event.EventContext;
+import org.damazio.notifier.prefs.Preferences.PreferenceListener;
 
 /**
  * Listens to and receives remote events.
@@ -24,14 +26,22 @@ import org.damazio.notifier.NotifierService.NotifierServiceModule;
  */
 public class RemoteEventReceiver implements NotifierServiceModule {
 
-  public void onCreate() {
-    // TODO Auto-generated method stub
+  private final EventContext eventContext;
+  private final PreferenceListener preferenceListener = new PreferenceListener() {
+    // TODO
+  };
 
+  public RemoteEventReceiver(EventContext eventContext) {
+    this.eventContext = eventContext;
+  }
+
+  public void onCreate() {
+    // Register to learn about changes in transport methods.
+    // This will also trigger the initial starting of the enabled ones.
+    eventContext.getPreferences().registerListener(preferenceListener, true);
   }
 
   public void onDestroy() {
-    // TODO Auto-generated method stub
-
+    eventContext.getPreferences().unregisterListener(preferenceListener);
   }
-
 }

@@ -45,6 +45,10 @@ public class EventManager {
 
   private long lastEventId;
 
+  public EventManager(Context context) {
+    this(context, new Preferences(context));
+  }
+
   public EventManager(Context context, Preferences preferences) {
     this.logHelper = new EventLogHelper(context.getContentResolver());
     this.preferences = preferences;

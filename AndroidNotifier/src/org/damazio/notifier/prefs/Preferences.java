@@ -23,6 +23,7 @@ import org.damazio.notifier.Constants;
 import org.damazio.notifier.R;
 import org.damazio.notifier.comm.transport.TransportType;
 import org.damazio.notifier.protocol.Common.Event;
+import org.damazio.notifier.protocol.Common.Event.Type;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -48,6 +49,9 @@ public class Preferences {
   /** Semantic listener for preference changes. */
   public static abstract class PreferenceListener {
     public void onStartForegroundChanged(boolean startForeground) {}
+
+    public void onSendEventStateChanged(Event.Type type, boolean enabled) {}
+    public void onTransportStateChanged(TransportType type, boolean enabled) {}
   }
 
   public Preferences(Context ctx) {
@@ -60,11 +64,19 @@ public class Preferences {
   }
 
   public void registerListener(PreferenceListener listener) {
+    registerListener(listener, false);
+  }
+
+  public void registerListener(PreferenceListener listener, boolean initialNotification) {
     synchronized (listeners) {
       if (listeners.isEmpty()) {
         prefs.registerOnSharedPreferenceChangeListener(prefsListener);
       }
       listeners.add(listener);
+
+      if (initialNotification) {
+        notifyAllPreferencesTo(listener);
+      }
     }
   }
 
@@ -86,6 +98,21 @@ public class Preferences {
           listener.onStartForegroundChanged(startForeground);
         }
       }
+    }
+    // TODO: Transport and event states
+  }
+
+  private void notifyAllPreferencesTo(PreferenceListener listener) {
+    listener.onStartForegroundChanged(startForeground());
+
+    EnumSet<TransportType> enabledSendTransports = getEnabledTransports();
+    for (TransportType type : TransportType.values()) {
+      listener.onTransportStateChanged(type, enabledSendTransports.contains(type));
+    }
+
+    EnumSet<Type> enabledSendEventTypes = getEnabledSendEventTypes();
+    for (Event.Type type : Event.Type.values()) {
+      listener.onSendEventStateChanged(type, enabledSendEventTypes.contains(type));
     }
   }
 
@@ -150,8 +177,51 @@ public class Preferences {
     return transports;
   }
 
+  public EnumSet<Event.Type> getEnabledSendEventTypes() {
+    EnumSet<Event.Type> events = EnumSet.noneOf(Event.Type.class);
+
+    if (!prefs.getBoolean(context.getString(R.string.prefkey_send_notifications), true)) {
+      // Master switch disabled.
+      return events;
+    }
+
+    if (prefs.getBoolean(context.getString(R.string.prefkey_send_battery), true)) {
+      events.add(Event.Type.NOTIFICATION_BATTERY);
+    }
+    if (prefs.getBoolean(context.getString(R.string.prefkey_send_missed_call), true)) {
+      events.add(Event.Type.NOTIFICATION_MISSED_CALL);
+    }
+    if (prefs.getBoolean(context.getString(R.string.prefkey_send_mms), true)) {
+      events.add(Event.Type.NOTIFICATION_MMS);
+    }
+    if (prefs.getBoolean(context.getString(R.string.prefkey_send_ring), true)) {
+      events.add(Event.Type.NOTIFICATION_RING);
+    }
+    if (prefs.getBoolean(context.getString(R.string.prefkey_send_sms), true)) {
+      events.add(Event.Type.NOTIFICATION_SMS);
+    }
+    if (prefs.getBoolean(context.getString(R.string.prefkey_send_third_party), true)) {
+      events.add(Event.Type.NOTIFICATION_THIRD_PARTY);
+    }
+    if (prefs.getBoolean(context.getString(R.string.prefkey_send_voicemail), true)) {
+      events.add(Event.Type.NOTIFICATION_VOICEMAIL);
+    }
+
+    return events;
+  }
+
   public boolean isIpOverTcp() {
     // TODO Auto-generated method stub
     return false;
+  }
+
+  public void setC2dmRegistrationId(String registrationId) {
+    // TODO Auto-generated method stub
+
+  }
+
+  public void setC2dmServerRegistered(boolean b) {
+    // TODO Auto-generated method stub
+
   }
 }

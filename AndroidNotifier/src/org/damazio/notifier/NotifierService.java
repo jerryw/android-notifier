@@ -63,7 +63,7 @@ public class NotifierService extends Service {
   private LocalEventReceiver localEventReceiver;
 
   /** Sends events to other devices. */
-  private LocalEventSender remoteEventSender;
+  private LocalEventSender localEventSender;
 
   /** Executes remote commands locally. */
   private RemoteCommandExecuter commandExecuter;
@@ -84,16 +84,17 @@ public class NotifierService extends Service {
     EventContext eventContext = new EventContext(this, eventManager, preferences);
 
     // Modules (external-event-driven)
-    remoteEventReceiver = new RemoteEventReceiver();
+    remoteEventReceiver = new RemoteEventReceiver(eventContext);
     localEventReceiver = new LocalEventReceiver(eventContext);
     remoteEventReceiver.onCreate();
     localEventReceiver.onCreate();
 
     // Event-log-driven
-    remoteEventSender = new LocalEventSender();
+    localEventSender = new LocalEventSender(eventContext);
+    localEventSender.onCreate();
     commandExecuter = new RemoteCommandExecuter();
     notificationDisplayer = new RemoteNotificationDisplayer();
-    eventManager.registerEventListeners(remoteEventSender, commandExecuter, notificationDisplayer);
+    eventManager.registerEventListeners(localEventSender, commandExecuter, notificationDisplayer);
   }
 
   private void updateForegroundState(boolean startForeground) {
@@ -138,7 +139,7 @@ public class NotifierService extends Service {
   @Override
   public void onDestroy() {
     preferences.unregisterListener(preferencesListener);
-    eventManager.unregisterEventListeners(remoteEventSender, commandExecuter, notificationDisplayer);
+    eventManager.unregisterEventListeners(localEventSender, commandExecuter, notificationDisplayer);
 
     localEventReceiver.onDestroy();
     remoteEventReceiver.onDestroy();

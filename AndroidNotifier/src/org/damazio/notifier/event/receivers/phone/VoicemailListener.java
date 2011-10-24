@@ -30,8 +30,6 @@ public class VoicemailListener extends PhoneStateListener {
 
   @Override
   public void onMessageWaitingIndicatorChanged(boolean mwi) {
-    // TODO: Start service if not live
-
     if (!eventContext.getPreferences().isEventTypeEnabled(Event.Type.NOTIFICATION_VOICEMAIL)) {
       return;
     }

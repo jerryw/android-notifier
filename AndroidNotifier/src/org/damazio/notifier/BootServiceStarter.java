@@ -15,16 +15,26 @@
  */
 package org.damazio.notifier;
 
+import static org.damazio.notifier.Constants.TAG;
+
+import org.damazio.notifier.prefs.Preferences;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class BootServiceStarter extends BroadcastReceiver {
-
   @Override
   public void onReceive(Context context, Intent intent) {
-    // TODO Auto-generated method stub
+    if (intent.getAction() != Intent.ACTION_BOOT_COMPLETED) {
+      Log.w(TAG, "Received unexpected intent: " + intent);
+      return;
+    }
 
+    Preferences preferences = new Preferences(context);
+    // TODO: Check if start at boot requested.
+
+    context.startService(new Intent(context, NotifierService.class));
   }
-
 }

@@ -142,7 +142,7 @@
                             android:defaultValue="true" />
       </PreferenceCategory>
 
-      <!-- Notifications sending -->
+      <!-- Notifications display -->
       <PreferenceCategory android:title="@string/prefs_notification_display_title"
                           android:dependency="@string/prefkey_receive_notifications">
         <!-- TODO: Options for ringtone, lights, etc. -->

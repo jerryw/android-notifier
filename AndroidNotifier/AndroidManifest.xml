@@ -69,9 +69,25 @@
         <data android:mimeType="application/vnd.wap.mms-message" />
       </intent-filter>
     </receiver>
-    <receiver android:name="event.receivers.thirdparty.ThirdPartyReceiver">
+    <receiver android:name=".event.receivers.thirdparty.ThirdPartyReceiver">
       <intent-filter>
         <action android:name="org.damazio.notifier.service.UserReceiver.USER_MESSAGE" />
+      </intent-filter>
+    </receiver>
+
+    <!-- Cloud messaging -->
+    <receiver android:name=".comm.transport.cloud.CloudMessageReceiver"
+              android:permission="com.google.android.c2dm.permission.SEND">
+      <intent-filter>
+          <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+          <category android:name="org.damazio.notifier" />
+      </intent-filter>
+    </receiver>
+    <receiver android:name=".comm.transport.cloud.RegistrationReceiver"
+              android:permission="com.google.android.c2dm.permission.SEND">
+      <intent-filter>
+          <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+          <category android:name="org.damazio.notifier" />
       </intent-filter>
     </receiver>
 
@@ -107,6 +123,12 @@
   <uses-permission android:name="android.permission.BLUETOOTH" />
   <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
   <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+   <!-- Only this application can receive the messages and registration result -->
+   <permission android:name="org.damazio.notifier.permission.C2D_MESSAGE"
+               android:protectionLevel="signature" />
+   <uses-permission android:name="org.damazio.notifier.permission.C2D_MESSAGE" />
+   <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
   <!-- Permissions for settings -->
   <uses-permission android:name="android.permission.WRITE_SETTINGS" />

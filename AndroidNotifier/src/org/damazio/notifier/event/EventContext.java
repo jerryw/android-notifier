@@ -15,6 +15,7 @@
  */
 package org.damazio.notifier.event;
 
+import org.damazio.notifier.comm.pairing.DeviceManager;
 import org.damazio.notifier.event.util.PhoneNumberUtils;
 import org.damazio.notifier.prefs.Preferences;
 
@@ -23,13 +24,16 @@ import android.content.Context;
 public class EventContext {
   private final Context context;
   private final EventManager eventManager;
+  private final DeviceManager deviceManager;
   private final Preferences preferences;
   private PhoneNumberUtils numberUtils;
 
-  public EventContext(Context context, EventManager eventManager, Preferences preferences) {
+  public EventContext(Context context, EventManager eventManager,
+      DeviceManager deviceManager, Preferences preferences) {
     this.context = context;
     this.eventManager = eventManager;
     this.preferences = preferences;
+    this.deviceManager = deviceManager;
   }
 
   public synchronized PhoneNumberUtils getNumberUtils() {
@@ -49,5 +53,9 @@ public class EventContext {
 
   public EventManager getEventManager() {
     return eventManager;
+  }
+
+  public DeviceManager getDeviceManager() {
+    return deviceManager;
   }
 }

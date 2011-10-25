@@ -17,6 +17,7 @@ package org.damazio.notifier;
 
 import java.util.List;
 
+import org.damazio.notifier.comm.pairing.DeviceManager;
 import org.damazio.notifier.comm.transport.RemoteEventReceiver;
 import org.damazio.notifier.comm.transport.LocalEventSender;
 import org.damazio.notifier.command.executers.RemoteCommandExecuter;
@@ -53,6 +54,8 @@ public class NotifierService extends Service {
 
   private Preferences preferences;
 
+  private DeviceManager deviceManager;
+
   /** Manages events and the event log. */
   private EventManager eventManager;
 
@@ -80,8 +83,9 @@ public class NotifierService extends Service {
 
     updateForegroundState(preferences.startForeground());
 
-    eventManager = new EventManager(this, preferences);
-    EventContext eventContext = new EventContext(this, eventManager, preferences);
+    deviceManager = new DeviceManager();
+    eventManager = new EventManager(this, deviceManager, preferences);
+    EventContext eventContext = new EventContext(this, eventManager, deviceManager, preferences);
 
     // Modules (external-event-driven)
     remoteEventReceiver = new RemoteEventReceiver(eventContext);

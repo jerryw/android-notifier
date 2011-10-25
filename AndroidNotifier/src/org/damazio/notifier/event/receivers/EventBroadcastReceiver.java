@@ -18,6 +18,7 @@ package org.damazio.notifier.event.receivers;
 import static org.damazio.notifier.Constants.TAG;
 
 import org.damazio.notifier.NotifierService;
+import org.damazio.notifier.comm.pairing.DeviceManager;
 import org.damazio.notifier.event.EventContext;
 import org.damazio.notifier.event.EventManager;
 import org.damazio.notifier.prefs.Preferences;
@@ -55,10 +56,11 @@ public abstract class EventBroadcastReceiver extends BroadcastReceiver {
     }
 
     synchronized (this) {
-      eventManager = new EventManager(context, preferences);
+      DeviceManager deviceManager = new DeviceManager();
+      eventManager = new EventManager(context, deviceManager, preferences);
 
       onReceiveEvent(eventManager.getEventContext(), intent);
-  
+
       eventManager = null;
     }
   }

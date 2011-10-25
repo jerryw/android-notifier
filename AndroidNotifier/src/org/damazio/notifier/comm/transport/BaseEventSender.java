@@ -11,6 +11,7 @@ import android.os.Message;
 import android.os.Process;
 import android.util.Log;
 
+// TODO: Maybe this is overkill - should we use the DB for retries?
 public abstract class BaseEventSender {
   private static final int MSG_EVENT = 42;
   private static final long RETRY_BACKOFF_MS = 200L;

@@ -20,6 +20,7 @@ import static org.damazio.notifier.Constants.TAG;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.damazio.notifier.comm.pairing.DeviceManager;
 import org.damazio.notifier.event.log.EventLogColumns;
 import org.damazio.notifier.event.log.EventLogHelper;
 import org.damazio.notifier.prefs.Preferences;
@@ -46,21 +47,22 @@ public class EventManager {
   private long lastEventId;
 
   public EventManager(Context context) {
-    this(context, new Preferences(context));
+    this(context, new DeviceManager(), new Preferences(context));
   }
 
-  public EventManager(Context context, Preferences preferences) {
+  public EventManager(Context context, DeviceManager deviceManager, Preferences preferences) {
     this.logHelper = new EventLogHelper(context.getContentResolver());
     this.preferences = preferences;
 
     // TODO: Cut this circular dependency
-    this.eventContext = new EventContext(context, this, preferences);
+    this.eventContext = new EventContext(context, this, deviceManager, preferences);
   }
 
   public EventContext getEventContext() {
     return eventContext;
   }
 
+  // TODO: How to ensure a wake lock is kept until the event is handled?
   public void handleLocalEvent(Event.Type eventType, MessageLite payload) {
     // Save the event to the event log.
     // Listeners will be notified by the logObserver.

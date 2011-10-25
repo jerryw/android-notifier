@@ -67,7 +67,7 @@ public class LocalEventSender implements EventListener, NotifierServiceModule {
         // TODO
         break;
       case IP:
-        sender = new IpEventSender(eventContext.getAndroidContext());
+        sender = new IpEventSender(eventContext);
         break;
       case USB:
         // TODO
